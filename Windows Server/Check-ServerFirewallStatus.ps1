@@ -79,7 +79,7 @@ function Check-ServerFirewallStatus {
             # Create a custom object to store the results
             $result = [PSCustomObject]@{
                 ServerName = $serverName
-                Status = 'Success'
+                CommunicationStatus = 'Success'
                 DomainEnabled   = $status.Domain
                 PrivateEnabled  = $status.Private
                 PublicEnabled   = $status.Public
@@ -89,7 +89,7 @@ function Check-ServerFirewallStatus {
             # Create a custom object to store the failed attempt
             $result = [PSCustomObject]@{
                 ServerName = $serverName
-                Status = 'Failed'
+                CommunicationStatus = 'Failed'
                 DomainEnabled   = 'N/A'
                 PrivateEnabled  = 'N/A'
                 PublicEnabled   = 'N/A'
