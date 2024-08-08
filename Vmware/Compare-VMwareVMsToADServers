@@ -1,0 +1,62 @@
+<#
+.SYNOPSIS
+    Compares VMs in VMware to servers in AD and returns the machines in VMware not found in AD.
+
+.DESCRIPTION
+    This script connects to a vCenter server using provided credentials, retrieves a list of VMs, and compares them to the list of servers in Active Directory. Servers in AD are identified by checking if their OS contains the word "Server". The script returns the VMs in VMware that are not found in AD.
+
+.PARAMETER VCenter
+    The name or IP address of the vCenter server.
+
+.PARAMETER Credential
+    The credentials to connect to the vCenter server.
+
+.EXAMPLE
+    Compare-VMwareVMsToADServers -VCenter "vcenter.example.com" -Credential (Get-Credential)
+
+.NOTES
+    Author: Zachary-Fischer
+    Repository: https://github.com/Mentaleak/SystemAdminPowershellScripts
+#>
+
+function Compare-VMwareVMsToADServers {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$VCenter,
+
+        [Parameter(Mandatory = $true)]
+        [PSCredential]$Credential
+    )
+
+    # Prerequisites
+    # Install-Module -Name VMware.PowerCLI -Force
+    # Install-Module -Name ActiveDirectory -Force
+
+    #Import-Module VMware.PowerCLI
+    #Import-Module ActiveDirectory
+
+    try {
+        # Connect to vCenter
+        $vcConnection = Connect-VIServer -Server $VCenter -Credential $Credential -ErrorAction Stop
+
+        # Get VMs from vCenter
+        $vmList = Get-VM | Select-Object -ExpandProperty Name
+
+        # Get servers from Active Directory
+        $adServerList = Get-ADComputer -Filter { OperatingSystem -like '*Server*' } | Select-Object -ExpandProperty Name
+
+        # Compare lists
+        $vmsNotInAD = $vmList | Where-Object { $_ -notin $adServerList }
+
+        # Output results
+        return $vmsNotInAD
+    } catch {
+        Write-Error "An error occurred: $_"
+    } finally {
+        # Disconnect from vCenter
+        if ($vcConnection) {
+            Disconnect-VIServer -Server $vcConnection -Confirm:$false
+        }
+    }
+}
