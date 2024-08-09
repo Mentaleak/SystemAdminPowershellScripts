@@ -68,8 +68,10 @@ function Check-ServerFirewallStatus {
         $serverName = $server.Name
         $counter++
 
-        Write-Progress -PercentComplete (($counter / $totalServers) * 100) -Status "Checking $serverName" -CurrentOperation "Retrieving firewall status" -Activity "$counter / $totalServers"
-
+        if($totalServers -gt 1){
+            Write-Progress -PercentComplete (($counter / $totalServers) * 100) -Status "Checking $serverName" -CurrentOperation "Retrieving firewall status" -Activity "$counter / $totalServers"
+        }
+        
         try {
             $status = Invoke-Command -ComputerName $serverName -ScriptBlock $firewallScriptBlock -ErrorAction Stop
 
