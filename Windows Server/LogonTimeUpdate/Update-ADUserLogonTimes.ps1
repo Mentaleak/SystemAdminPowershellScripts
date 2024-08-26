@@ -15,7 +15,7 @@
     The attribute in which to store the latest logon time, such as 'extensionAttribute3'.
 
 .EXAMPLE
-    Update-ADUserLogonTimes -LogFile "C:\Scripts\ADFSLogonTimeUpdater.log" -LogonAttributes @('lastLogon', 'extensionAttribute2') -TargetAttribute 'extensionAttribute3'
+    Update-ADUserLogonTimes -LogFile "C:\Scripts\LogonTimeUpdater.log" -LogonAttributes @('lastLogon', 'extensionAttribute2') -TargetAttribute 'extensionAttribute3'
 
 .NOTES
     Author: Zachary-Fischer
@@ -28,7 +28,7 @@
 
 function Update-ADUserLogonTimes {
     param (
-        [string]$LogFile = "C:\Scripts\ADFSLogonTimeUpdater.log",
+        [string]$LogFile = "C:\Scripts\LogonTimeUpdater.log",
         [string[]]$LogonAttributes = @('lastLogon', 'extensionAttribute2'),
         [string]$TargetAttribute = 'extensionAttribute3'
     )
@@ -95,4 +95,4 @@ function Update-ADUserLogonTimes {
 }
 
 # Example usage of the function
-# Update-ADUserLogonTimes -LogFile "C:\Scripts\ADFSLogonTimeUpdater.log" -LogonAttributes @('lastLogon', 'extensionAttribute2') -TargetAttribute 'extensionAttribute3'
+# Update-ADUserLogonTimes -LogFile "C:\Scripts\LogonTimeUpdater.log" -LogonAttributes @('lastLogon', 'extensionAttribute2') -TargetAttribute 'extensionAttribute3'
